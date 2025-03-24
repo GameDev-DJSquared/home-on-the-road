@@ -5,22 +5,28 @@ public class PlayerMover : MonoBehaviour
 {
     [SerializeField] float walkingSpeed = 7.5f;
     [SerializeField] float runningSpeed = 11.5f;
-    [SerializeField] float jumpSpeed = 8.0f;
-    [SerializeField] float gravity = 20.0f;
+    [SerializeField] float jumpHeight = 2.0f;
+    [SerializeField] float gravity = -20.0f;
     [SerializeField] Camera playerCamera;
     [SerializeField] float lookSpeed = 2.0f;
-    [SerializeField] float lookXLimit = 90.0f; // Standard FPS limit
+    [SerializeField] float lookXLimit = 90.0f;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] float groundDistance = 0.4f;
+    [SerializeField] LayerMask groundMask;
 
     private CharacterController characterController;
     private float rotationX = 0;
     private float rotationY = 0;
-    private Vector3 moveDirection = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
     private bool canMove = true;
+    bool isGrounded = false;
+    Vector3 offset;
+
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-
+        offset = playerCamera.transform.localPosition - transform.position;
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -57,32 +63,32 @@ public class PlayerMover : MonoBehaviour
 
         float speed = isRunning ? runningSpeed : walkingSpeed;
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        moveDirection.x = move.x * speed;
-        moveDirection.z = move.z * speed;
+        velocity.x = move.x * speed;
+        velocity.z = move.z * speed;
+
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if(isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
 
         // Jumping
-        if (characterController.isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                moveDirection.y = jumpSpeed;
-            }
-            else
-            {
-                moveDirection.y = -0.1f; // Small downward force to stay grounded
-            }
-        }
-        else
-        {
-            moveDirection.y -= gravity * Time.deltaTime;
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
         }
 
-        characterController.Move(moveDirection * Time.deltaTime);
+        velocity.y += gravity * Time.deltaTime;
+
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     private void LateUpdate()
     {
         //transform.position = player.transform.position + offset;
-        playerCamera.transform.position = transform.position;
+        playerCamera.transform.position = transform.position + offset;
     }
 }
