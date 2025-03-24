@@ -32,10 +32,15 @@ Please don't do work on the main branch. Ideally make a branch and pull to dev
 2. Bring changes from dev to your branch
 `git merge dev`
 
-3. Once conflicts are resolved, push your branch
-`git push -u origin <new-branch>`
+3. Once conflicts are resolved, add new changes to be committed
+`git add .`
 
-4. Make a pull request on github
+4. Commit changes to branch
+`git commit -m <commit message>`
+
+5. Push your branch with its changes to remote `git push -u origin <new-branch>`
+
+6. Make a pull request on github
 
   - Go to the GitHub repository.
 
