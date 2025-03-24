@@ -27,7 +27,7 @@ Please don't do work on the main branch. Ideally make a branch and pull to dev
 `git switch -c <new-branch>`
 
 2. Grab latest changes from online
-`git pull origin`
+`git pull origin dev`
 
 2. Bring changes from dev to your branch
 `git merge dev`
