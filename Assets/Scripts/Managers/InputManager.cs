@@ -71,6 +71,17 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void InteractPressed(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            interactPressed = true;
+        } else if(context.canceled)
+        {
+            interactPressed = false;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
