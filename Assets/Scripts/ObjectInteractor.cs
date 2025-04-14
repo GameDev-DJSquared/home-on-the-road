@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ObjectInteractor : MonoBehaviour
@@ -7,6 +8,7 @@ public class ObjectInteractor : MonoBehaviour
 
     Camera cam;
     GameObject highlightedObj;
+    public Action<Item, GameObject> OnObjectGrabbed;
 
     void Start()
     {
@@ -22,21 +24,24 @@ public class ObjectInteractor : MonoBehaviour
         {
             if (hit.collider.CompareTag(interactableTag))
             {
-                highlightedObj = hit.collider.gameObject;
-
-                if(highlightedObj.TryGetComponent<Interactable>(out Interactable i))
+                
+                if(hit.collider.gameObject.TryGetComponent(out Interactable interact))
                 {
-                    i.TurnOnOutline();
+                    interact.TurnOnOutline();
+                    highlightedObj = interact.gameObject;
+
+                    if (InputManager.instance.GetInteractPressed())
+                    {
+                        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
+
+                        OnObjectGrabbed?.Invoke(interact.GetItem(), interact.gameObject);
+
+                    }
                 }
 
 
-                if (InputManager.instance.GetInteractPressed())
-                {
-                    Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
-                    
-                    Debug.Log(Time.time + ": Interacted with!");
 
-                }
+                
             }
         } else
         {

@@ -5,6 +5,8 @@ public class PlayerMover : MonoBehaviour
 {
     [SerializeField] float walkingSpeed = 7.5f;
     [SerializeField] float runningSpeed = 11.5f;
+    [SerializeField]
+    [Range(0f, 1f)] float weightMaxMult = 0.25f;
     [SerializeField] float jumpHeight = 2.0f;
     [SerializeField] float gravity = -20.0f;
     [SerializeField] Camera playerCamera;
@@ -15,6 +17,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] LayerMask groundMask;
 
     private CharacterController characterController;
+    InventoryScript inventoryScript;
     private float rotationX = 0;
     private float rotationY = 0;
     private Vector3 velocity = Vector3.zero;
@@ -26,6 +29,7 @@ public class PlayerMover : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        inventoryScript = GetComponent<InventoryScript>();
         offset = playerCamera.transform.localPosition - transform.position;
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
@@ -62,6 +66,11 @@ public class PlayerMover : MonoBehaviour
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
         float speed = isRunning ? runningSpeed : walkingSpeed;
+
+
+        float weightEffect = 1 - (1 - weightMaxMult) * inventoryScript.WeightCapacity();
+        speed *= weightEffect;
+
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         velocity.x = move.x * speed;
         velocity.z = move.z * speed;

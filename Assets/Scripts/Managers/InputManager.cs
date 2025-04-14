@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     bool submitPressed = false;
     bool runPressed = false;
     bool pausePressed = false;
+    bool dropPressed = false;
 
     public static InputManager instance { get; private set; }
 
@@ -82,6 +83,18 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void DropPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            dropPressed = true;
+        }
+        else if (context.canceled)
+        {
+            dropPressed = false;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
@@ -120,6 +133,12 @@ public class InputManager : MonoBehaviour
         return value;
     }
 
+    public bool GetDropPressed()
+    {
+        bool value = dropPressed;
+        dropPressed = false;
+        return value;
+    }
 
 
     public bool GetRunPressed()

@@ -9,14 +9,14 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     static Material outlineMaterial;
-    Renderer renderer;
+    new Renderer renderer;
+    [SerializeField] Item item;
 
     void Awake()
     {
         if(outlineMaterial == null)
         {
             outlineMaterial = Resources.Load<Material>("OutlineMaterial");
-            Debug.Log(outlineMaterial.name);
         }
 
 
@@ -38,4 +38,15 @@ public class Interactable : MonoBehaviour
         renderer.materials[renderer.materials.Length - 1].SetFloat("_Alpha", 0);
 
     }
+
+    public Item GetItem()
+    {
+        if(item == null)
+        {
+            Debug.LogError("Item Grab failed: no item reference set");
+            return default(Item);
+        }
+        return item;
+    }
+
 }
