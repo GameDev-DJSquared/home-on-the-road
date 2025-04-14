@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Item 
+[CreateAssetMenu(fileName="Item", menuName ="Item")]
+public class Item : ScriptableObject
 {
+    new public string name;
     public GameObject prefab;
-
+    public float weight = 1;
+    public int inventorySize = 1;
 }
