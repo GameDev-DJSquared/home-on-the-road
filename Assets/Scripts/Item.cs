@@ -10,4 +10,10 @@ public class Item : ScriptableObject
     public GameObject prefab;
     public float weight = 1;
     public int inventorySize = 1;
+    public Type type;
+
+    public enum Type {
+        Food,
+        Other
+    }
 }

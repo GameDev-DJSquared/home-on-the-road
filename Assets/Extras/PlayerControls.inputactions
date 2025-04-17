@@ -42,13 +42,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Drop",
-                    "type": "Button",
-                    "id": "a3e248b6-b500-4da8-acdb-e2d365f184ef",
-                    "expectedControlType": "",
+                    "name": "ScrollInventory",
+                    "type": "Value",
+                    "id": "a04007b6-bfdc-437d-9af9-ac4ee1b66cfb",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -296,23 +296,12 @@
                 },
                 {
                     "name": "",
-                    "id": "7c96da2b-7759-47fc-86e5-0f0ea20ff191",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "563c48de-54dc-4a46-a0d1-fdf30f1ca67c",
+                    "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Drop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8eafc1e3-ff39-4f97-889f-35908e24a0c6",
-                    "path": "<Keyboard>/g",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Drop",
+                    "action": "ScrollInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

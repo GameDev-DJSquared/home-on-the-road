@@ -27,6 +27,11 @@ public class ObjectInteractor : MonoBehaviour
                 
                 if(hit.collider.gameObject.TryGetComponent(out Interactable interact))
                 {
+
+                    if(highlightedObj != null && highlightedObj != hit.collider.gameObject)
+                    {
+                        highlightedObj.GetComponent<Interactable>().TurnOffOutline();
+                    }
                     interact.TurnOnOutline();
                     highlightedObj = interact.gameObject;
 

@@ -505,8 +505,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkingSpeed: 7.5
-  runningSpeed: 11.5
-  weightMaxMult: 0.25
+  runningSpeed: 10.5
+  weightMaxMult: 0.5
   jumpHeight: 2
   gravity: -20
   playerCamera: {fileID: 330585545}
@@ -1172,7 +1172,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1979270712}
         m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-        m_MethodName: DropPressed
+        m_MethodName: Scrolled
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1182,8 +1182,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: a3e248b6-b500-4da8-acdb-e2d365f184ef
-    m_ActionName: Main/Drop[/Keyboard/g]
+    m_ActionId: a04007b6-bfdc-437d-9af9-ac4ee1b66cfb
+    m_ActionName: Main/ScrollInventory[/Mouse/scroll]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Main

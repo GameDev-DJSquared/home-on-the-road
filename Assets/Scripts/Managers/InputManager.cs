@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
 {
     Vector2 moveDir = Vector2.zero;
     Vector2 lookDir = Vector2.zero;
+    Vector2 scrollDir = Vector2.zero;
     PlayerInput playerInput;
     bool interactPressed = false;
     bool backPressed = false;
@@ -15,6 +16,7 @@ public class InputManager : MonoBehaviour
     bool runPressed = false;
     bool pausePressed = false;
     bool dropPressed = false;
+
 
     public static InputManager instance { get; private set; }
 
@@ -95,6 +97,18 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void Scrolled(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            scrollDir = context.ReadValue<Vector2>();
+        }
+        else if (context.canceled)
+        {
+            scrollDir = Vector2.zero;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
@@ -140,6 +154,12 @@ public class InputManager : MonoBehaviour
         return value;
     }
 
+    public Vector2 GetScrollDir()
+    {
+        Vector2 value = scrollDir;
+        scrollDir = Vector2.zero;
+        return value;
+    }
 
     public bool GetRunPressed()
     {
