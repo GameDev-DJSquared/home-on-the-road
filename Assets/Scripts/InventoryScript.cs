@@ -57,7 +57,6 @@ public class InventoryScript : MonoBehaviour
     public void DropItem()
     {
 
-
         if (slots[selectedSlot] != null)
         {
             Vector3 spawnPosition = transform.position + transform.forward * spawnDistance;
@@ -91,8 +90,8 @@ public class InventoryScript : MonoBehaviour
                 slots[FindSlot()] = item;
             }
 
-            go.SetActive(false);
-            
+            //go.SetActive(false);
+            Destroy(go);
         }
     }
 

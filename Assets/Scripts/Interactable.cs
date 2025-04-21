@@ -12,6 +12,8 @@ public class Interactable : MonoBehaviour
     new Renderer renderer;
     [SerializeField] Item item;
 
+    
+
     void Awake()
     {
         if(outlineMaterial == null)
