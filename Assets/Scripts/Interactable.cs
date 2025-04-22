@@ -46,7 +46,7 @@ public class Interactable : MonoBehaviour
         if(item == null)
         {
             Debug.LogError("Item Grab failed: no item reference set");
-            return default(Item);
+            return null;
         }
         return item;
     }

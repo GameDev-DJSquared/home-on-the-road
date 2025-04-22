@@ -17,6 +17,7 @@ public class InventoryScript : MonoBehaviour
     
 
     Item[] slots;
+    Item.Type[] slotTypes;
 
     int selectedSlot = 0;
 
@@ -25,6 +26,11 @@ public class InventoryScript : MonoBehaviour
     private void Awake()
     {
         slots = new Item[inventoryCapacity];
+        slotTypes = new Item.Type[inventoryCapacity];
+        slotTypes[0] = Item.Type.Other;
+        slotTypes[1] = Item.Type.Other;
+
+
         GetComponent<ObjectInteractor>().OnObjectGrabbed += OnObjectGrabbed;
     }
 
@@ -76,7 +82,7 @@ public class InventoryScript : MonoBehaviour
     void OnObjectGrabbed(Item item, GameObject go)
     {
         int remainingCapacity = inventoryCapacity - TotalWeight();
-        if(remainingCapacity >= item.inventorySize && OpenSlot())
+        if(remainingCapacity >= item.inventorySize && OpenSlot(item.type))
         {
 
 
@@ -87,7 +93,7 @@ public class InventoryScript : MonoBehaviour
                 slots[selectedSlot] = item;
             } else
             {
-                slots[FindSlot()] = item;
+                slots[FindSlot(item.type)] = item;
             }
 
             //go.SetActive(false);
@@ -95,14 +101,42 @@ public class InventoryScript : MonoBehaviour
         }
     }
 
-    
-    int FindSlot()
+
+    //int FindSlot()
+    //{
+    //    for(int i = 0; i < slots.Length; i++)
+    //    {
+    //        if(slots[i] == null) return i;
+    //    }
+    //    return -1;
+    //}
+
+
+    //public bool OpenSlot()
+    //{
+    //    foreach(Item i in slots)
+    //    {
+    //        if (i == null) return true;
+    //    }
+    //    return false;
+    //}
+
+    int FindSlot(Item.Type type)
     {
-        for(int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if(slots[i] == null) return i;
+            if (slots[i] == null && slotTypes[i] == type) return i;
         }
         return -1;
+    }
+
+    public bool OpenSlot(Item.Type type)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] == null && slotTypes[i] == type) return true;
+        }
+        return false;
     }
 
     public float WeightCapacity()
@@ -121,13 +155,5 @@ public class InventoryScript : MonoBehaviour
         return total;
     }
 
-    public bool OpenSlot()
-    {
-        foreach(Item i in slots)
-        {
-            if (i == null) return true;
-        }
-        return false;
-    }
 
 }
