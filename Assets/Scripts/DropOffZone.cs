@@ -8,7 +8,7 @@ public class DropOffZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        Debug.Log("New Trigger Enter");
+        //Debug.Log("New Trigger Enter");
         if(col.TryGetComponent(out Interactable interact))
         {
             Debug.Log("Object is interactable");
