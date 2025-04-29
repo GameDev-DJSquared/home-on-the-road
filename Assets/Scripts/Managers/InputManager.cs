@@ -8,12 +8,15 @@ public class InputManager : MonoBehaviour
 {
     Vector2 moveDir = Vector2.zero;
     Vector2 lookDir = Vector2.zero;
+    Vector2 scrollDir = Vector2.zero;
     PlayerInput playerInput;
     bool interactPressed = false;
     bool backPressed = false;
     bool submitPressed = false;
     bool runPressed = false;
     bool pausePressed = false;
+    bool dropPressed = false;
+    bool restartPressed = false;
 
     public static InputManager instance { get; private set; }
 
@@ -82,6 +85,55 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void DropPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            dropPressed = true;
+        }
+        else if (context.canceled)
+        {
+            dropPressed = false;
+        }
+    }
+
+    public void Scrolled(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            scrollDir = context.ReadValue<Vector2>();
+        }
+        else if (context.canceled)
+        {
+            scrollDir = Vector2.zero;
+        }
+    }
+
+    public void RestartPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            restartPressed = true;
+        }
+        else if (context.canceled)
+        {
+            restartPressed = false;
+        }
+    }
+
+
+    public void PausePressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            pausePressed = true;
+        }
+        else if (context.canceled)
+        {
+            pausePressed = false;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
@@ -120,7 +172,19 @@ public class InputManager : MonoBehaviour
         return value;
     }
 
+    public bool GetDropPressed()
+    {
+        bool value = dropPressed;
+        dropPressed = false;
+        return value;
+    }
 
+    public Vector2 GetScrollDir()
+    {
+        Vector2 value = scrollDir;
+        scrollDir = Vector2.zero;
+        return value;
+    }
 
     public bool GetRunPressed()
     {
@@ -128,5 +192,17 @@ public class InputManager : MonoBehaviour
         return runPressed;
     }
 
+
+    public bool GetRestartPressed()
+    {
+        return restartPressed;
+    }
+
+    public bool GetPausePressed()
+    {
+        bool value = pausePressed;
+        pausePressed = false;
+        return value;
+    }
 
 }

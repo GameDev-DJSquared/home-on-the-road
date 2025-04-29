@@ -1,10 +1,15 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] float walkingSpeed = 7.5f;
+    float speed = 0;
     [SerializeField] float runningSpeed = 11.5f;
+    [SerializeField] float speedPickUpRate = 0.001f;
+    [SerializeField]
+    [Range(0f, 1f)] float weightMaxMult = 0.25f;
     [SerializeField] float jumpHeight = 2.0f;
     [SerializeField] float gravity = -20.0f;
     [SerializeField] Camera playerCamera;
@@ -15,6 +20,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] LayerMask groundMask;
 
     private CharacterController characterController;
+    InventoryScript inventoryScript;
     private float rotationX = 0;
     private float rotationY = 0;
     private Vector3 velocity = Vector3.zero;
@@ -22,10 +28,13 @@ public class PlayerMover : MonoBehaviour
     bool isGrounded = false;
     Vector3 offset;
 
+    float moveX, moveZ;
+    bool isRunning = false;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        inventoryScript = GetComponent<InventoryScript>();
         offset = playerCamera.transform.localPosition - transform.position;
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
@@ -34,6 +43,10 @@ public class PlayerMover : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.instance.paused)
+        {
+            return;
+        }
         HandleRotation();
         HandleMovement();
     }
@@ -57,14 +70,21 @@ public class PlayerMover : MonoBehaviour
     {
         if (!canMove) return;
 
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        moveX = Input.GetAxis("Horizontal");
+        moveZ = Input.GetAxis("Vertical");
+        isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        float speed = isRunning ? runningSpeed : walkingSpeed;
+        //speed = isRunning ? Mathf.Clamp(speed, speed + 0.1f runningSpeed) : walkingSpeed;
+        
+
+
+
+        float weightEffect = 1 - (1 - weightMaxMult) * inventoryScript.WeightCapacity();
+        float changedSpeed = speed * weightEffect;
+
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        velocity.x = move.x * speed;
-        velocity.z = move.z * speed;
+        velocity.x = move.x * changedSpeed;
+        velocity.z = move.z * changedSpeed;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -86,9 +106,23 @@ public class PlayerMover : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
+    private void FixedUpdate()
+    {
+        if(isRunning)
+        {
+            speed = Mathf.Clamp(speed + speedPickUpRate, 0, runningSpeed);
+        } else
+        {
+            speed = walkingSpeed;
+        }
+    }
+
+
     private void LateUpdate()
     {
         //transform.position = player.transform.position + offset;
         playerCamera.transform.position = transform.position + offset;
     }
+
+    
 }
