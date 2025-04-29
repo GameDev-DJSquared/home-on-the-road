@@ -43,6 +43,10 @@ public class PlayerMover : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.instance.paused)
+        {
+            return;
+        }
         HandleRotation();
         HandleMovement();
     }

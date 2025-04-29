@@ -16,3 +16,6 @@ MonoBehaviour:
   prefab: {fileID: 1742486202643559720, guid: b62fccdbf33183c479886919122a1d3a, type: 3}
   weight: 1
   inventorySize: 1
+  value: 1
+  type: 0
+  image: {fileID: 21300000, guid: 70e1bbe7034178247bc1b46223e1b86c, type: 3}

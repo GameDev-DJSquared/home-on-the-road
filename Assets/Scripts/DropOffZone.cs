@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class DropOffZone : MonoBehaviour
 {
+
+
     public static List<Item> items = new List<Item>();
+    
 
     private void OnTriggerEnter(Collider col)
     {
         //Debug.Log("New Trigger Enter");
         if(col.TryGetComponent(out Interactable interact))
         {
-            Debug.Log("Object is interactable");
+            //Debug.Log("Object is interactable");
 
             Item item = interact.GetItem();
             if(item != null)
             {
                 items.Add(item);
-                Debug.Log("New Total Value: " + GetTotalValue());
+                //Debug.Log("New Total Value: " + GetTotalValue());
+
+                if(GetTotalValue() == FoodManager.instance.GetTotalPossibleValue())
+                {
+                    GameManager.instance.FinishGame(false);
+                }
             }
+
         }
 
         
@@ -39,7 +48,7 @@ public class DropOffZone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        items.Clear();
     }
 
     // Update is called once per frame

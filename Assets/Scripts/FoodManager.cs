@@ -1,35 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FoodManager : MonoBehaviour
 {
-    [SerializeField] int totalFoodCount = 10;
-
-    List<GameObject> allItems = new List<GameObject>();
+    public static FoodManager instance { private set; get; }
 
 
-    private void Start()
+    [SerializeField] Slider foodProgress;
+    [SerializeField] int totalFoodCount = 17;
+
+    List<GameObject> allPrefabs = new List<GameObject>();
+    List<GameObject> enabledPrefabs = new List<GameObject>();
+
+    float totalPossibleValue = 0f;
+    
+
+
+    private void Awake()
     {
+        if(instance != null)
+        {
+            Debug.LogWarning("Two FoodManagers!");
+        }
+        instance = this;
+
+
         ShelfScript[] shelfScripts = GameObject.FindObjectsOfType<ShelfScript>();
         foreach(ShelfScript shelfScript in shelfScripts)
         {
-            allItems.AddRange(shelfScript.GetItems());
+            allPrefabs.AddRange(shelfScript.GetItems());
         }
 
 
-        List<GameObject> shuffledItems = new List<GameObject>(allItems);
+        List<GameObject> shuffledItems = new List<GameObject>(allPrefabs);
         ShuffleList(shuffledItems);
 
         for (int i = 0; i < Mathf.Min(totalFoodCount, shuffledItems.Count); i++)
         {
             shuffledItems[i].SetActive(true);
+            totalPossibleValue += shuffledItems[i].GetComponent<Interactable>().GetItem().value;
         }
+
+
+
+
 
     }
 
+    private void Update()
+    {
+        foodProgress.value = Mathf.Clamp(DropOffZone.GetTotalValue() / GetTotalPossibleValue(), 0f, 1);
+    }
 
+    public float GetTotalPossibleValue()
+    {
+        return totalPossibleValue;
+    }
 
     private void ShuffleList<T>(List<T> list)
     {

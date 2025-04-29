@@ -4,15 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(ObjectInteractor))]
 public class InventoryScript : MonoBehaviour
 {
 
+    [SerializeField] Slider inventorySlider;
+
+    [SerializeField]
+    Image[] inventoryImages;
+    
+
     [SerializeField] int inventoryCapacity = 5;
     [SerializeField] float spawnDistance = 1f;
+    [SerializeField] int healthHeal = 20;
 
     
 
@@ -37,22 +43,64 @@ public class InventoryScript : MonoBehaviour
 
     private void Update()
     {
+        if(GameManager.instance.paused)
+        {
+            return;
+        }
+
         if(InputManager.instance.GetDropPressed())
         {
             DropItem();
         }
 
+        if(slots[selectedSlot] != null && slots[selectedSlot].type == Item.Type.Other && InputManager.instance.GetInteractPressed() && GetComponent<PlayerHealth>().health != GetComponent<PlayerHealth>().healthI)
+        {
+            GetComponent<PlayerHealth>().health += healthHeal;
+            slots[selectedSlot] = null;
+        }
+
+
+
+        // UI
+        inventorySlider.value = WeightCapacity();
+
+        for(int i = 0; i < inventoryImages.Length; i++)
+        {
+            if(selectedSlot == i)
+            {
+                inventoryImages[i].color = Color.yellow;
+
+            } else
+            {
+                inventoryImages[i].color = Color.white;
+            }
+
+            if(slots.Length > i)
+            {
+                if (slots[i] != null)
+                {
+                    inventoryImages[i].transform.GetChild(0).gameObject.SetActive(true);
+                    inventoryImages[i].transform.GetChild(0).GetComponent<Image>().sprite = slots[i].image;
+                } else
+                {
+                    inventoryImages[i].transform.GetChild(0).gameObject.SetActive(false);
+                    inventoryImages[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
+
+
+                }
+            }
+        }
 
 
         Vector2 scroll = InputManager.instance.GetScrollDir();
         if(scroll != Vector2.zero)
         {
-            if (scroll.y > 0)
+            if (scroll.y < 0)
                 selectedSlot = (selectedSlot + 1) % inventoryCapacity;
-            else if (scroll.y < 0)
+            else if (scroll.y > 0)
                 selectedSlot = (selectedSlot - 1 + inventoryCapacity) % inventoryCapacity;
 
-            Debug.Log("new slot: " + selectedSlot);
+            //Debug.Log("new slot: " + selectedSlot);
         }
     }
     
@@ -88,7 +136,7 @@ public class InventoryScript : MonoBehaviour
 
             // ADD THAT SUCKA
 
-            if (slots[selectedSlot] == null)
+            if (slots[selectedSlot] == null && slotTypes[selectedSlot] == item.type)
             {
                 slots[selectedSlot] = item;
             } else

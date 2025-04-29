@@ -18,3 +18,4 @@ MonoBehaviour:
   inventorySize: 2
   value: 0
   type: 1
+  image: {fileID: 21300000, guid: ea32960228f62dc499599f0ce76457cd, type: 3}

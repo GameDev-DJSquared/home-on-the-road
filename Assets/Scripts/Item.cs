@@ -12,6 +12,7 @@ public class Item : ScriptableObject
     public int inventorySize = 1;
     public int value = 1;
     public Type type;
+    public Sprite image;
 
     public enum Type {
         Food,

@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
     bool runPressed = false;
     bool pausePressed = false;
     bool dropPressed = false;
-
+    bool restartPressed = false;
 
     public static InputManager instance { get; private set; }
 
@@ -109,6 +109,31 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void RestartPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            restartPressed = true;
+        }
+        else if (context.canceled)
+        {
+            restartPressed = false;
+        }
+    }
+
+
+    public void PausePressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            pausePressed = true;
+        }
+        else if (context.canceled)
+        {
+            pausePressed = false;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
@@ -167,5 +192,17 @@ public class InputManager : MonoBehaviour
         return runPressed;
     }
 
+
+    public bool GetRestartPressed()
+    {
+        return restartPressed;
+    }
+
+    public bool GetPausePressed()
+    {
+        bool value = pausePressed;
+        pausePressed = false;
+        return value;
+    }
 
 }
