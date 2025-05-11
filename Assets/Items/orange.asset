@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: orange
   m_EditorClassIdentifier: 
   name: orange
-  prefab: {fileID: 0}
+  prefab: {fileID: 3762127512988134276, guid: a8331ef11db90054784518f852e8c939, type: 3}
   weight: 0.75
   inventorySize: 1
   value: 1
   type: 0
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: f7918327bd32c6148abe22c635dbedcd, type: 3}

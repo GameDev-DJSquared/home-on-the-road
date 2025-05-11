@@ -59,9 +59,23 @@ public class ObjectInteractor : MonoBehaviour
 
                 
             }
-        } else
+            else
+            {
+                if (highlightedObj != null)
+                {
+                    if (highlightedObj.TryGetComponent<Interactable>(out Interactable i))
+                    {
+                        i.TurnOffOutline();
+
+                    }
+                    highlightedObj = null;
+                }
+
+            }
+        }
+        else
         {
-            if(highlightedObj != null)
+            if (highlightedObj != null)
             {
                 if (highlightedObj.TryGetComponent<Interactable>(out Interactable i))
                 {
@@ -70,11 +84,11 @@ public class ObjectInteractor : MonoBehaviour
                 }
                 highlightedObj = null;
             }
-            
+
         }
 
 
-        
+
     }
 
 

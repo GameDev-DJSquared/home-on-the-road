@@ -14,7 +14,8 @@ public class InventoryScript : MonoBehaviour
 
     [SerializeField]
     Image[] inventoryImages;
-    
+
+    [SerializeField] Light flashlightLight;
 
     [SerializeField] int inventoryCapacity = 5;
     [SerializeField] float spawnDistance = 1f;
@@ -48,16 +49,27 @@ public class InventoryScript : MonoBehaviour
             return;
         }
 
+        
+
         if(InputManager.instance.GetDropPressed())
         {
             DropItem();
         }
 
-        if(slots[selectedSlot] != null && slots[selectedSlot].type == Item.Type.Other && InputManager.instance.GetInteractPressed() && GetComponent<PlayerHealth>().health != GetComponent<PlayerHealth>().healthI)
+        if(slots[selectedSlot] != null)
         {
-            GetComponent<PlayerHealth>().health += healthHeal;
-            slots[selectedSlot] = null;
-        }
+
+            if(slots[selectedSlot].type == Item.Type.Food && InputManager.instance.GetInteractPressed() && GetComponent<PlayerHealth>().health != GetComponent<PlayerHealth>().healthI)
+            {
+                GetComponent<PlayerHealth>().health += healthHeal;
+                slots[selectedSlot] = null;
+            } else if (slots[selectedSlot].type == Item.Type.Other && slots[selectedSlot].name == "flashlight" && InputManager.instance.GetInteractPressed())
+            {
+                flashlightLight.enabled = !flashlightLight.enabled;
+            }
+
+            
+        } 
 
 
 
@@ -113,6 +125,12 @@ public class InventoryScript : MonoBehaviour
 
         if (slots[selectedSlot] != null)
         {
+            if (slots[selectedSlot].name == "flashlight")
+            {
+                flashlightLight.enabled = false;
+            }
+
+
             Vector3 spawnPosition = transform.position + transform.forward * spawnDistance;
             Quaternion spawnRotation = transform.rotation;
 
