@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] float walkingSpeed = 7.5f;
@@ -19,7 +18,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] float groundDistance = 0.4f;
     [SerializeField] LayerMask groundMask;
 
-    private CharacterController characterController;
+    Rigidbody rb;
     InventoryScript inventoryScript;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -33,7 +32,7 @@ public class PlayerMover : MonoBehaviour
 
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         inventoryScript = GetComponent<InventoryScript>();
         offset = playerCamera.transform.localPosition - transform.position;
         // Lock cursor to center
@@ -103,7 +102,9 @@ public class PlayerMover : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
 
-        characterController.Move(velocity * Time.deltaTime);
+
+        rb.velocity = velocity;
+        //characterController.Move(velocity * Time.deltaTime);
     }
 
     private void FixedUpdate()
