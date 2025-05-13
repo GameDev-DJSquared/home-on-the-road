@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField] Transform target;
+    PlayerHealth playerHealth;
     Seeker seeker;
     Rigidbody rb;
 
@@ -20,13 +21,14 @@ public class EnemyScript : MonoBehaviour
     public float rotationSpeed = 5f;
     private Vector3 lastPosition;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody>();
         if (target == null)
         {
             target = GameObject.FindGameObjectWithTag("Player").transform;
+            playerHealth = FindObjectOfType<PlayerHealth>();
         }
 
 
@@ -37,12 +39,31 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (stopped)
+            return;
+
+
         float distFromPlayer  = Vector3.Distance(rb.position, target.position);
         if (distFromPlayer <= closeDistance)
         {
-            Vector3 dir = (target.position - rb.position).normalized;
+            
+
+
+            Vector3 dir = (target.position - rb.position);
             dir.y = 0;
-            rb.MovePosition(rb.position + dir * speed * Time.deltaTime);
+
+            if (dir.magnitude > 0.01f)
+            {
+                Vector3 move = dir.normalized * speed * Time.deltaTime;
+                if (move.magnitude > dir.magnitude)
+                    move = dir; // don't overshoot
+
+                rb.MovePosition(rb.position + move);
+            } else
+            {
+                playerHealth.Hurt();
+            }
+            return;
         }
 
 
@@ -110,4 +131,6 @@ public class EnemyScript : MonoBehaviour
         }
 
     }
+
+
 }

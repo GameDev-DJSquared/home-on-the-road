@@ -12,23 +12,34 @@ public class DropOffZone : MonoBehaviour
     private void OnTriggerEnter(Collider col)
     {
         //Debug.Log("New Trigger Enter");
-        if(col.TryGetComponent(out Interactable interact))
+
+        if(col.gameObject.tag == "Interactable")
         {
-            //Debug.Log("Object is interactable");
-
-            Item item = interact.GetItem();
-            if(item != null)
+            GameObject go = col.gameObject;
+            if (go.transform.parent != null && go.transform.parent.tag == "Interactable")
             {
-                items.Add(item);
-                //Debug.Log("New Total Value: " + GetTotalValue());
-
-                if(GetTotalValue() == FoodManager.instance.GetTotalPossibleValue())
-                {
-                    GameManager.instance.FinishGame(false);
-                }
+                go = go.transform.parent.gameObject;
             }
+            if (go.TryGetComponent(out Interactable interact))
+            {
+                //Debug.Log("Object is interactable");
 
+                Item item = interact.GetItem();
+                if (item != null)
+                {
+                    items.Add(item);
+                    //Debug.Log("New Total Value: " + GetTotalValue());
+
+                    if (GetTotalValue() == FoodManager.instance.GetTotalPossibleValue())
+                    {
+                        GameManager.instance.FinishGame(false);
+                    }
+                }
+
+            }
         }
+
+        
 
         
     }
