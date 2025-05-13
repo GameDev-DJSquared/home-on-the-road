@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject pauseUI;
     [SerializeField] GameObject endScreen;
 
+    public int night = 1;
     public bool paused = false;
 
     // Start is called before the first frame update

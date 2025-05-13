@@ -22,7 +22,7 @@ public class ObjectInteractor : MonoBehaviour
     void Update()
     {
         ray = new Ray(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.magenta, 1.5f);
+        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.magenta, 1.5f);
 
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
@@ -48,7 +48,7 @@ public class ObjectInteractor : MonoBehaviour
 
                     if (InputManager.instance.GetInteractPressed())
                     {
-                        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
+                        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
 
                         OnObjectGrabbed?.Invoke(interact.GetItem(), interact.gameObject);
 

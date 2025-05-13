@@ -18,7 +18,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] float groundDistance = 0.4f;
     [SerializeField] LayerMask groundMask;
 
-    Rigidbody rb;
+    CharacterController characterController;
     InventoryScript inventoryScript;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -32,7 +32,7 @@ public class PlayerMover : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         inventoryScript = GetComponent<InventoryScript>();
         offset = playerCamera.transform.localPosition - transform.position;
         // Lock cursor to center
@@ -85,9 +85,10 @@ public class PlayerMover : MonoBehaviour
         velocity.x = move.x * changedSpeed;
         velocity.z = move.z * changedSpeed;
 
+        Debug.DrawRay(groundCheck.position, Vector3.down * groundDistance);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -97,14 +98,14 @@ public class PlayerMover : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
+            speed = runningSpeed;
         }
 
         velocity.y += gravity * Time.deltaTime;
 
 
-        rb.velocity = velocity;
-        //characterController.Move(velocity * Time.deltaTime);
+        //rb.velocity = velocity;
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     private void FixedUpdate()
