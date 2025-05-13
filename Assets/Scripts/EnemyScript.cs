@@ -17,6 +17,8 @@ public class EnemyScript : MonoBehaviour
     Path path;
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
+    public float rotationSpeed = 5f;
+    private Vector3 lastPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,7 @@ public class EnemyScript : MonoBehaviour
 
 
         InvokeRepeating("UpdatePath", 0f, 1f);
-        //seeker.StartPath(rb.position, target.position, OnPathComplete);
+        seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
     // Update is called once per frame
@@ -69,7 +71,18 @@ public class EnemyScript : MonoBehaviour
             currentWaypoint++;
         }
 
-        //rb.MovePosition(rb.position + direction * speed * Time.deltaTime);
+        rb.MovePosition(rb.position + direction * speed * Time.deltaTime);
+        
+        // Calculate movement direction (difference in position)
+        Vector3 velocity = (transform.position - lastPosition) / Time.deltaTime;
+
+        if (velocity.magnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(velocity);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        lastPosition = transform.position;
 
         
         if(distFromPlayer <= seekingDistance)
