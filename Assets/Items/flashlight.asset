@@ -17,5 +17,6 @@ MonoBehaviour:
   weight: 1
   inventorySize: 1
   value: 1
+  durability: 100
   type: 1
   image: {fileID: 21300000, guid: 0a96fa1b7e21db74eaace8c5ec776f66, type: 3}

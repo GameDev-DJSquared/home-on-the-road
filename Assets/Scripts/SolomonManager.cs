@@ -21,7 +21,7 @@ public class SolomonManager : MonoBehaviour
         enemyScript = GetComponent<EnemyScript>();
         if(lineOfSight == null)
         {
-            lineOfSight = GameObject.FindObjectOfType<LineOfSight>();
+            lineOfSight = FindObjectOfType<LineOfSight>();
         }
         normalSpeed = enemyScript.speed;
         updateTime = updateTimeI;
@@ -30,21 +30,39 @@ public class SolomonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if(updateTime > 0)
         {
             updateTime -= Time.deltaTime;
             if(updateTime <= 0)
             {
+
                 updateTime = updateTimeI;
                 //Check if still seen by player
 
-                if(lineOfSight.InLineOfSight(transform))
+                if(enemyScript.InRange())
                 {
-                    StopMoving();
+
+
+                    if (lineOfSight.InLineOfSight(transform))
+                    {
+                        StopMoving();
+                    }
+                    else
+                    {
+                        ResumeMoving();
+                    }
                 } else
                 {
-                    ResumeMoving();
+                    if(!seen)
+                    {
+                        StopMoving();
+                    }
                 }
+
+
+                
             }
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,7 @@ public class InputManager : MonoBehaviour
     bool pausePressed = false;
     bool dropPressed = false;
     bool restartPressed = false;
+    bool firePressed = false;
 
     public static InputManager instance { get; private set; }
 
@@ -134,6 +136,18 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void FirePressed(InputAction.CallbackContext context)
+    {
+        
+        if (context.performed)
+        {
+            firePressed = true;
+        } else if(context.canceled)
+        {
+            firePressed = false;
+        }
+    }
+
 
     public void SwitchActions(int map)
     {
@@ -192,6 +206,12 @@ public class InputManager : MonoBehaviour
         return runPressed;
     }
 
+    public bool GetFirePressed()
+    {
+        bool value = firePressed;
+        firePressed = false;
+        return value;
+    }
 
     public bool GetRestartPressed()
     {

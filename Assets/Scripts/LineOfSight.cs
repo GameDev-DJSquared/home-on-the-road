@@ -77,13 +77,23 @@ public class LineOfSight : MonoBehaviour
     public bool InLineOfSight(Transform target)
     {
         Vector3 directionToTarget = (target.position - playerCamera.position).normalized;
+        float distanceToTarget = Vector3.Distance(playerCamera.position, target.position);
 
         // Check if within angle
         float angleToTarget = Vector3.Angle(playerCamera.forward, directionToTarget);
 
         if (angleToTarget <= viewAngle / 2f)
         {
-            return true;
+            
+            if (!Physics.Raycast(playerCamera.position, directionToTarget, distanceToTarget, obstructionMask)) {
+                //Debug.DrawRay(playerCamera.position, directionToTarget * distanceToTarget, Color.magenta, 1f);
+                return true;
+            } else
+            {
+                //Debug.DrawRay(playerCamera.position, directionToTarget * distanceToTarget, Color.red, 1f);
+
+                //Debug.Log("thing inbetween the player and " + name);
+            }
         }
         return false;
     }

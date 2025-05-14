@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1036602156913006237}
   - component: {fileID: 6273482246315198361}
   m_Layer: 0
-  m_Name: Pepper
+  m_Name: pepper
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ab8b638193a274e9ec7e8ec74ee353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 74da5acb333ee944181e8e25442c4710, type: 2}
+  item:
+    name: pepper
+    prefab: {fileID: 2397973896605765184}
+    weight: 1
+    inventorySize: 1
+    value: 10
+    durability: 100
+    type: 0
+    image: {fileID: 21300000, guid: 0d53ffe88d78d784497e5077b67a360b, type: 3}
 --- !u!54 &5957599556693405128
 Rigidbody:
   m_ObjectHideFlags: 0

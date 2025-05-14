@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5809750860605115278}
   - component: {fileID: 1815737555227499342}
   m_Layer: 0
-  m_Name: Cabbage
+  m_Name: cabbage
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ab8b638193a274e9ec7e8ec74ee353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: fd03d5d663156934b8993ceaf25cdc56, type: 2}
+  item:
+    name: cabbage
+    prefab: {fileID: 784268446702976902}
+    weight: 1
+    inventorySize: 1
+    value: 10
+    durability: 100
+    type: 0
+    image: {fileID: 21300000, guid: d8089f42d3013ea41b14a69196767c09, type: 3}
 --- !u!54 &8610546136629285982
 Rigidbody:
   m_ObjectHideFlags: 0

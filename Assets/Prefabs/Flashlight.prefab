@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1206810775524061871}
   - component: {fileID: 8301295912821413350}
   m_Layer: 0
-  m_Name: Flashlight
+  m_Name: flashlight
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ab8b638193a274e9ec7e8ec74ee353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 063649bcace4a5c4eb58797be898c4e4, type: 2}
+  item:
+    name: flashlight
+    prefab: {fileID: 6886099083602282385}
+    weight: 1
+    inventorySize: 1
+    value: 0
+    durability: 100
+    type: 1
+    image: {fileID: 21300000, guid: 0a96fa1b7e21db74eaace8c5ec776f66, type: 3}
 --- !u!23 &2522818135436295940
 MeshRenderer:
   m_ObjectHideFlags: 0

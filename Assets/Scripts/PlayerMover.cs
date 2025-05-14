@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerMover : MonoBehaviour
 {
@@ -30,6 +31,11 @@ public class PlayerMover : MonoBehaviour
     float moveX, moveZ;
     bool isRunning = false;
 
+    [SerializeField] float slowMultiplier = 0.3f;
+    bool slow = false;
+    float slowTime;
+    [SerializeField] float slowTimeI = 3f;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -38,6 +44,8 @@ public class PlayerMover : MonoBehaviour
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        VolumeScript.instance.ChangeVignetteIntensity(0.13f);
+
     }
 
     void Update()
@@ -80,6 +88,19 @@ public class PlayerMover : MonoBehaviour
 
         float weightEffect = 1 - (1 - weightMaxMult) * inventoryScript.WeightCapacity();
         float changedSpeed = speed * weightEffect;
+
+
+        if(slow)
+        {
+            slowTime -= Time.deltaTime;
+            changedSpeed *= slowMultiplier;
+            if(slowTime <= 0)
+            {
+                slow = false;
+                VolumeScript.instance.ChangeVignetteIntensity(0.13f);
+
+            }
+        }
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         velocity.x = move.x * changedSpeed;
@@ -126,5 +147,12 @@ public class PlayerMover : MonoBehaviour
         playerCamera.transform.position = transform.position + offset;
     }
 
+
+    public void SlowDown()
+    {
+        slow = true;
+        slowTime = slowTimeI;
+        VolumeScript.instance.ChangeVignetteIntensity(0.4f);
+    }
     
 }

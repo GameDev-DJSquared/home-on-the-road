@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6171910594384522250}
   - component: {fileID: 2162648611238576355}
   m_Layer: 0
-  m_Name: Orange
+  m_Name: orange
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ab8b638193a274e9ec7e8ec74ee353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 135138b0972ef724eb402bb353db870d, type: 2}
+  item:
+    name: orange
+    prefab: {fileID: 3762127512988134276}
+    weight: 0.75
+    inventorySize: 1
+    value: 10
+    durability: 100
+    type: 0
+    image: {fileID: 21300000, guid: f7918327bd32c6148abe22c635dbedcd, type: 3}
 --- !u!33 &8229735936879891300
 MeshFilter:
   m_ObjectHideFlags: 0

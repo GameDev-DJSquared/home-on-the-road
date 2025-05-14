@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2509016528737411296}
   - component: {fileID: 4357246671749131908}
   m_Layer: 0
-  m_Name: Apple
+  m_Name: apple
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ab8b638193a274e9ec7e8ec74ee353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 2aaa07dcdbbb85f4798a094fbc5a449f, type: 2}
+  item:
+    name: apple
+    prefab: {fileID: 6654815798806764820}
+    weight: 1
+    inventorySize: 1
+    value: 10
+    durability: 100
+    type: 0
+    image: {fileID: 21300000, guid: 5e29ea81ec813174f9fda7d2bbf21a14, type: 3}
 --- !u!33 &6858468101402326713
 MeshFilter:
   m_ObjectHideFlags: 0

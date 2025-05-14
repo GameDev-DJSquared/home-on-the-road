@@ -36,7 +36,8 @@ public class FoodManager : MonoBehaviour
             allPrefabs.AddRange(shelfScript.GetItems());
         }
 
-
+        totalFoodCount = Mathf.Clamp(GameManager.quota / 10, 17, GameManager.quota / 10);
+        Debug.Log("enabling " + totalFoodCount + " foods");
         List<GameObject> shuffledItems = new List<GameObject>(allPrefabs);
         ShuffleList(shuffledItems);
 

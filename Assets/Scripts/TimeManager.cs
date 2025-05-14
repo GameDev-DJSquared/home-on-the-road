@@ -68,6 +68,7 @@ public class TimeManager : MonoBehaviour
         if(hours == 8 && minutes < 60)
         {
             GameManager.instance.FinishGame(false);
+            Stop();
         }
     }
 

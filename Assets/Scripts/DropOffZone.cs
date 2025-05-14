@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DropOffZone : MonoBehaviour
 {
-
+    [SerializeField] TextMeshProUGUI totalText;
 
     public static List<Item> items = new List<Item>();
-    
 
     private void OnTriggerEnter(Collider col)
     {
@@ -27,6 +27,10 @@ public class DropOffZone : MonoBehaviour
                 Item item = interact.GetItem();
                 if (item != null)
                 {
+                    if(items.Contains(item))
+                    {
+                        return;
+                    }
                     items.Add(item);
                     //Debug.Log("New Total Value: " + GetTotalValue());
 
@@ -35,6 +39,7 @@ public class DropOffZone : MonoBehaviour
                         GameManager.instance.FinishGame(false);
                     }
                 }
+                UpdateText();
 
             }
         }
@@ -60,6 +65,7 @@ public class DropOffZone : MonoBehaviour
     void Start()
     {
         items.Clear();
+        UpdateText();
     }
 
     // Update is called once per frame
@@ -70,11 +76,20 @@ public class DropOffZone : MonoBehaviour
 
     public static int GetTotalValue()
     {
+        string s = "";
         int totalValue = 0;
         foreach(Item item in items)
         {
             totalValue += item.value;
+            s += item.value + ", ";
         }
         return totalValue;
     }
+
+    public void UpdateText()
+    {
+        totalText.text = "Quota: \n" + GetTotalValue().ToString("000") + "/" + GameManager.quota.ToString("000");
+
+    }
+
 }

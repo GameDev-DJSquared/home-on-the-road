@@ -10,11 +10,17 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject youDiedText;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI advanceText;
     [SerializeField] GameObject mainUI;
     [SerializeField] GameObject pauseUI;
     [SerializeField] GameObject endScreen;
 
-    public int night = 1;
+
+    static int startingQuota = 70;
+    static float quotaMultiplier = 1.5f;
+
+    public static int night = 1;
+    public static int quota = 70;
     public bool paused = false;
 
     // Start is called before the first frame update
@@ -34,10 +40,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(endScreen.activeInHierarchy && InputManager.instance.GetInteractPressed())
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(0);
+        }
+
         if(InputManager.instance.GetRestartPressed())
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(0);
+            quota = startingQuota;
+            night = 1;
         }
 
         if(InputManager.instance.GetPausePressed())
@@ -75,6 +89,25 @@ public class GameManager : MonoBehaviour
         mainUI.SetActive(false);
         endScreen.SetActive(true);
         youDiedText.SetActive(died);
+        Debug.Log("finished Game");
+        if(!died && DropOffZone.GetTotalValue() >= quota)
+        {
+            if(!advanceText.gameObject.activeInHierarchy)
+            {
+                advanceText.gameObject.SetActive(true);
+
+            }
+            night++;
+            quota += DropOffZone.GetTotalValue() - quota;
+
+            quota = (int)(quota * quotaMultiplier);
+        } else
+        {
+            advanceText.gameObject.SetActive(false);
+
+            night = 1;
+            quota = startingQuota;
+        }
         scoreText.text = "Final Score: " + GetScore();
     }
 
@@ -87,5 +120,5 @@ public class GameManager : MonoBehaviour
         return (int)value;
     }
 
-
+    
 }
