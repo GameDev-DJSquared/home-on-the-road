@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] float walkingSpeed = 7.5f;
@@ -19,7 +19,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] float groundDistance = 0.4f;
     [SerializeField] LayerMask groundMask;
 
-    private CharacterController characterController;
+    CharacterController characterController;
     InventoryScript inventoryScript;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -31,6 +31,11 @@ public class PlayerMover : MonoBehaviour
     float moveX, moveZ;
     bool isRunning = false;
 
+    [SerializeField] float slowMultiplier = 0.3f;
+    bool slow = false;
+    float slowTime;
+    [SerializeField] float slowTimeI = 3f;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -39,6 +44,8 @@ public class PlayerMover : MonoBehaviour
         // Lock cursor to center
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        VolumeScript.instance.ChangeVignetteIntensity(0.13f);
+
     }
 
     void Update()
@@ -82,13 +89,27 @@ public class PlayerMover : MonoBehaviour
         float weightEffect = 1 - (1 - weightMaxMult) * inventoryScript.WeightCapacity();
         float changedSpeed = speed * weightEffect;
 
+
+        if(slow)
+        {
+            slowTime -= Time.deltaTime;
+            changedSpeed *= slowMultiplier;
+            if(slowTime <= 0)
+            {
+                slow = false;
+                VolumeScript.instance.ChangeVignetteIntensity(0.13f);
+
+            }
+        }
+
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         velocity.x = move.x * changedSpeed;
         velocity.z = move.z * changedSpeed;
 
+        Debug.DrawRay(groundCheck.position, Vector3.down * groundDistance);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -98,11 +119,13 @@ public class PlayerMover : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
+            speed = runningSpeed;
         }
 
         velocity.y += gravity * Time.deltaTime;
 
+
+        //rb.velocity = velocity;
         characterController.Move(velocity * Time.deltaTime);
     }
 
@@ -124,5 +147,12 @@ public class PlayerMover : MonoBehaviour
         playerCamera.transform.position = transform.position + offset;
     }
 
+
+    public void SlowDown()
+    {
+        slow = true;
+        slowTime = slowTimeI;
+        VolumeScript.instance.ChangeVignetteIntensity(0.4f);
+    }
     
 }

@@ -49,8 +49,18 @@ public class PlayerHealth : MonoBehaviour
     {
         if (!invulnerable && other.gameObject.layer == 7)
         {
+            Hurt();
+        }
+    }
+
+
+
+    public void Hurt()
+    {
+        if(!invulnerable)
+        {
             health -= damage;
-            if(health <= 0)
+            if (health <= 0)
             {
                 GameManager.instance.FinishGame(true);
             }
@@ -59,5 +69,4 @@ public class PlayerHealth : MonoBehaviour
 
         }
     }
-
 }
