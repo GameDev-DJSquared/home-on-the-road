@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// This script handles the actual ability to pick up objects
+/// </summary>
 public class ObjectInteractor : MonoBehaviour
 {
     public string interactableTag = "Interactable"; // Change this to whatever tag you want
@@ -9,6 +12,7 @@ public class ObjectInteractor : MonoBehaviour
     Camera cam;
     GameObject highlightedObj;
     public Action<Item, GameObject> OnObjectGrabbed;
+    Ray ray;
 
     void Start()
     {
@@ -17,18 +21,25 @@ public class ObjectInteractor : MonoBehaviour
 
     void Update()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        ray = new Ray(cam.transform.position, cam.transform.forward);
+        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.magenta, 1.5f);
 
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
         {
             if (hit.collider.CompareTag(interactableTag))
             {
-                
-                if(hit.collider.gameObject.TryGetComponent(out Interactable interact))
-                {
 
-                    if(highlightedObj != null && highlightedObj != hit.collider.gameObject)
+                GameObject go = hit.collider.gameObject;
+                if (go.transform.parent != null && go.transform.parent.tag == interactableTag)
+                {
+                    go = go.transform.parent.gameObject;
+                }
+
+                if (go.TryGetComponent(out Interactable interact))
+                {
+                    
+                    if(highlightedObj != null && highlightedObj != go)
                     {
                         highlightedObj.GetComponent<Interactable>().TurnOffOutline();
                     }
@@ -37,7 +48,7 @@ public class ObjectInteractor : MonoBehaviour
 
                     if (InputManager.instance.GetInteractPressed())
                     {
-                        Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
+                        //Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green, 1.5f);
 
                         OnObjectGrabbed?.Invoke(interact.GetItem(), interact.gameObject);
 
@@ -48,9 +59,23 @@ public class ObjectInteractor : MonoBehaviour
 
                 
             }
-        } else
+            else
+            {
+                if (highlightedObj != null)
+                {
+                    if (highlightedObj.TryGetComponent<Interactable>(out Interactable i))
+                    {
+                        i.TurnOffOutline();
+
+                    }
+                    highlightedObj = null;
+                }
+
+            }
+        }
+        else
         {
-            if(highlightedObj != null)
+            if (highlightedObj != null)
             {
                 if (highlightedObj.TryGetComponent<Interactable>(out Interactable i))
                 {
@@ -59,10 +84,13 @@ public class ObjectInteractor : MonoBehaviour
                 }
                 highlightedObj = null;
             }
-            
+
         }
 
 
-        
+
     }
+
+
+
 }

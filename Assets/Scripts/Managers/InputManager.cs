@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,7 +17,13 @@ public class InputManager : MonoBehaviour
     bool runPressed = false;
     bool pausePressed = false;
     bool dropPressed = false;
+    bool slot1Pressed = false;
+    bool slot2Pressed = false;
+    bool slot3Pressed = false;
+    bool slot4Pressed = false;
+    bool slot5Pressed = false;
     bool restartPressed = false;
+    bool firePressed = false;
 
     public static InputManager instance { get; private set; }
 
@@ -97,6 +104,67 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void Slot1Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            slot1Pressed = true;
+        }
+        else if (context.canceled)
+        {
+            slot1Pressed = false;
+        }
+    }
+
+    public void Slot2Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            slot2Pressed = true;
+        }
+        else if (context.canceled)
+        {
+            slot2Pressed = false;
+        }
+    }
+
+    public void Slot3Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            slot3Pressed = true;
+        }
+        else if (context.canceled)
+        {
+            slot3Pressed = false;
+        }
+    }
+
+    public void Slot4Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            slot4Pressed = true;
+        }
+        else if (context.canceled)
+        {
+            slot4Pressed = false;
+        }
+    }
+
+    public void Slot5Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            slot5Pressed = true;
+        }
+        else if (context.canceled)
+        {
+            slot5Pressed = false;
+        }
+    }
+
+
     public void Scrolled(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -131,6 +199,18 @@ public class InputManager : MonoBehaviour
         else if (context.canceled)
         {
             pausePressed = false;
+        }
+    }
+
+    public void FirePressed(InputAction.CallbackContext context)
+    {
+        
+        if (context.performed)
+        {
+            firePressed = true;
+        } else if(context.canceled)
+        {
+            firePressed = false;
         }
     }
 
@@ -179,6 +259,40 @@ public class InputManager : MonoBehaviour
         return value;
     }
 
+    public bool GetSlot1Pressed()
+    {
+        bool value = slot1Pressed;
+        slot1Pressed = false;
+        return value;
+    }
+
+    public bool GetSlot2Pressed()
+    {
+        bool value = slot2Pressed;
+        slot2Pressed = false;
+        return value;
+    }
+    public bool GetSlot3Pressed()
+    {
+        bool value = slot3Pressed;
+        slot3Pressed = false;
+        return value;
+    }
+
+    public bool GetSlot4Pressed()
+    {
+        bool value = slot4Pressed;
+        slot4Pressed = false;
+        return value;
+    }
+
+    public bool GetSlot5Pressed()
+    {
+        bool value = slot5Pressed;
+        slot5Pressed = false;
+        return value;
+    }
+
     public Vector2 GetScrollDir()
     {
         Vector2 value = scrollDir;
@@ -192,6 +306,12 @@ public class InputManager : MonoBehaviour
         return runPressed;
     }
 
+    public bool GetFirePressed()
+    {
+        bool value = firePressed;
+        firePressed = false;
+        return value;
+    }
 
     public bool GetRestartPressed()
     {

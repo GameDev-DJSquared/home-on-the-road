@@ -11,7 +11,7 @@ public class TimeManager : MonoBehaviour
     const int MINUTES_IN_HOUR = 60;
     const int HOURS_IN_DAY = 24;
 
-    float hours = 22;
+    float hours = 23;
     float minutes = 0;
     int day = 1;
 
@@ -65,9 +65,10 @@ public class TimeManager : MonoBehaviour
         timeText.text = formattedTime;
 
 
-        if(hours == 7 && minutes < 60)
+        if(hours == 8 && minutes < 60)
         {
             GameManager.instance.FinishGame(false);
+            Stop();
         }
     }
 

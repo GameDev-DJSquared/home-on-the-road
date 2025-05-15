@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Internal;
+//using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +35,8 @@ public class FoodManager : MonoBehaviour
             allPrefabs.AddRange(shelfScript.GetItems());
         }
 
-
+        totalFoodCount = Mathf.Clamp(GameManager.quota / 10, 17, GameManager.quota / 10);
+        Debug.Log("enabling " + totalFoodCount + " foods");
         List<GameObject> shuffledItems = new List<GameObject>(allPrefabs);
         ShuffleList(shuffledItems);
 
