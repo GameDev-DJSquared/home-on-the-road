@@ -43,13 +43,13 @@ public class GameManager : MonoBehaviour
         if(endScreen.activeInHierarchy && InputManager.instance.GetInteractPressed())
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
 
         if(InputManager.instance.GetRestartPressed())
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
             quota = startingQuota;
             night = 1;
         }
