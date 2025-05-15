@@ -168,6 +168,39 @@ public class InventoryScript : MonoBehaviour
             }
         }
 
+        if (InputManager.instance.GetSlot1Pressed())
+        {
+            selectedSlot = 0;
+            UpdateModel();
+            //Debug.Log("new slot: " + selectedSlot);
+        }
+
+        if (InputManager.instance.GetSlot2Pressed())
+        {
+            selectedSlot = 1;
+            UpdateModel();
+            //Debug.Log("new slot: " + selectedSlot);
+        }
+        if (InputManager.instance.GetSlot3Pressed())
+        {
+            selectedSlot = 2;
+            UpdateModel();
+            //Debug.Log("new slot: " + selectedSlot);
+        }
+        if (InputManager.instance.GetSlot4Pressed())
+        {
+            selectedSlot = 3;
+            UpdateModel();
+            //Debug.Log("new slot: " + selectedSlot);
+        }
+        if (InputManager.instance.GetSlot5Pressed())
+        {
+            selectedSlot = 4;
+            UpdateModel();
+            //Debug.Log("new slot: " + selectedSlot);
+        }
+
+
 
         Vector2 scroll = InputManager.instance.GetScrollDir();
         if(scroll != Vector2.zero)
